@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useFeed } from "@/context/feedContext";
 import { v4 as uuidv4 } from "uuid";
 import GridItem from "@/components/UI/Feed/gridItem";
@@ -12,7 +12,7 @@ interface categoryData {
   [category: string]: FeedData;
 }
 
-export default function ResultPage() {
+function ResultPageContent() {
   const { setCategoryData } = useFeed();
   const { categoryData } = useFeed();
   const searchParams = useSearchParams();
@@ -170,5 +170,13 @@ export default function ResultPage() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function ResultPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResultPageContent />
+    </Suspense>
   );
 }
